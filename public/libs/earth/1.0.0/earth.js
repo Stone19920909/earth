@@ -472,7 +472,6 @@
 
         var projection = globe.projection;
         var bounds = globe.bounds(view);
-        // How fast particles move on the screen (arbitrary value chosen for aesthetics).
         var velocityScale = bounds.height * primaryGrid.particles.velocityScale;
 
         var columns = [];
@@ -517,6 +516,41 @@
 
         report.status("");
 
+        function createOptimizedField(columns, bounds, mask) {
+            var field = function(x, y) {
+                var column = columns[Math.round(x)];
+                return column && column[Math.round(y)] || NULL_WIND_VECTOR;
+            };
+
+            field.isDefined = function(x, y) {
+                return field(x, y)[2] !== null;
+            };
+
+            field.isInsideBoundary = function(x, y) {
+                return field(x, y) !== NULL_WIND_VECTOR;
+            };
+
+            field.release = function() {
+                columns = [];
+            };
+
+            field.randomize = function(o) {
+                var x, y;
+                var safetyNet = 0;
+                do {
+                    x = Math.round(Math.random() * (bounds.xMax - bounds.x) + bounds.x);
+                    y = Math.round(Math.random() * (bounds.yMax - bounds.y) + bounds.y);
+                } while (!field.isDefined(x, y) && safetyNet++ < 30);
+                o.x = x;
+                o.y = y;
+                return o;
+            };
+
+            field.overlay = mask.imageData;
+
+            return field;
+        }
+
         (function batchInterpolate() {
             try {
                 if (!cancel.requested) {
@@ -525,19 +559,18 @@
                         interpolateColumn(x);
                         x += 2;
                         if ((Date.now() - start) > MAX_TASK_TIME) {
-                            // Interpolation is taking too long. Schedule the next batch for later and yield.
                             report.progress((x - bounds.x) / (bounds.xMax - bounds.x));
                             setTimeout(batchInterpolate, MIN_SLEEP_TIME);
                             return;
                         }
                     }
                 }
-                d.resolve(createField(columns, bounds, mask));
+                d.resolve(createOptimizedField(columns, bounds, mask));
             }
             catch (e) {
                 d.reject(e);
             }
-            report.progress(1);  // 100% complete
+            report.progress(1);
             log.timeEnd("interpolating field");
         })();
 
