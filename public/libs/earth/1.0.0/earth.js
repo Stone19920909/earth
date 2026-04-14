@@ -1285,6 +1285,41 @@
             view = µ.view();
             globeAgent.submit(buildGlobe, configuration.get("projection"));
         });
+
+        // Language switching functionality
+        d3.selectAll(".lang-option").on("click", function() {
+            var lang = d3.select(this).attr("data-lang");
+            var currentLang = d3.select("body").attr("data-lang") || "en";
+            
+            if (lang !== currentLang) {
+                var path = window.location.pathname;
+                var hash = window.location.hash;
+                
+                var langPaths = {
+                    "en": "/",
+                    "ja": "/jp/",
+                    "zh": "/zh/",
+                    "fr": "/fr/",
+                    "de": "/de/",
+                    "es": "/es/"
+                };
+                
+                var newPath = langPaths[lang] || "/";
+                window.location.href = newPath + hash;
+            }
+            
+            d3.event.preventDefault();
+            return false;
+        });
+
+        // Highlight current language
+        var currentLang = d3.select("body").attr("data-lang") || "en";
+        d3.selectAll(".lang-option").each(function() {
+            var lang = d3.select(this).attr("data-lang");
+            if (lang === currentLang) {
+                d3.select(this).classed("highlighted", true);
+            }
+        });
     }
 
     function start() {

@@ -1,353 +1,851 @@
 {
     "lang": {
         "en": "en",
-        "ja": "ja"
+        "ja": "ja",
+        "zh": "zh",
+        "fr": "fr",
+        "de": "de",
+        "es": "es"
     },
     "Date": {
-        "ja": "日付"
+        "ja": "日付",
+        "zh": "日期",
+        "fr": "Date",
+        "de": "Datum",
+        "es": "Fecha"
     },
     "Layer": {
-        "ja": "曲面"
+        "ja": "曲面",
+        "zh": "图层",
+        "fr": "Couche",
+        "de": "Ebene",
+        "es": "Capa"
     },
     "earth": {
-        "ja": "地球"
+        "ja": "地球",
+        "zh": "地球",
+        "fr": "Terre",
+        "de": "Erde",
+        "es": "Tierra"
     },
     "an animated map of global wind and weather": {
-        "ja": "世界中の天気状況がビジュアライズ"
+        "ja": "世界中の天気状況がビジュアライズ",
+        "zh": "全球风和天气的动画地图",
+        "fr": "une carte animée du vent et de la météo mondiaux",
+        "de": "eine animierte Karte des globalen Windes und Wetters",
+        "es": "un mapa animado del viento y el clima globales"
     },
     "An animated map of global wind and weather. Visit the community at https://www.facebook.com/EarthWindMap": {
-        "ja": "世界中の天気状況がビジュアライズ。コミュニティはこちらへ：https://www.facebook.com/EarthWindMap"
+        "ja": "世界中の天気状況がビジュアライズ。コミュニティはこちらへ：https://www.facebook.com/EarthWindMap",
+        "zh": "全球风和天气的动画地图。访问社区：https://www.facebook.com/EarthWindMap",
+        "fr": "Une carte animée du vent et de la météo mondiaux. Visitez la communauté à https://www.facebook.com/EarthWindMap",
+        "de": "Eine animierte Karte des globalen Windes und Wetters. Besuchen Sie die Community unter https://www.facebook.com/EarthWindMap",
+        "es": "Un mapa animado del viento y el clima globales. Visita la comunidad en https://www.facebook.com/EarthWindMap"
     },
     "This site requires IE9 or newer.": {
-        "ja": "このサイトはIE9より以上が必要です。"
+        "ja": "このサイトはIE9より以上が必要です。",
+        "zh": "此网站需要 IE9 或更高版本。",
+        "fr": "Ce site nécessite IE9 ou plus récent.",
+        "de": "Diese Seite erfordert IE9 oder neuer.",
+        "es": "Este sitio requiere IE9 o más reciente."
     },
     "Data": {
-        "ja": "データ"
+        "ja": "データ",
+        "zh": "数据",
+        "fr": "Données",
+        "de": "Daten",
+        "es": "Datos"
     },
     "NCEP / National Weather Service / NOAA": {
-        "ja": "NCEP / アメリカ国立気象局 / NOAA"
+        "ja": "NCEP / アメリカ国立気象局 / NOAA",
+        "zh": "NCEP / 美国国家气象局 / NOAA",
+        "fr": "NCEP / Service météorologique national / NOAA",
+        "de": "NCEP / Nationaler Wetterdienst / NOAA",
+        "es": "NCEP / Servicio Meteorológico Nacional / NOAA"
     },
     "GFS / NCEP / US National Weather Service": {
-        "ja": "GFS / NCEP / アメリカ国立気象局"
+        "ja": "GFS / NCEP / アメリカ国立気象局",
+        "zh": "GFS / NCEP / 美国国家气象局",
+        "fr": "GFS / NCEP / Service météorologique national américain",
+        "de": "GFS / NCEP / US Nationaler Wetterdienst",
+        "es": "GFS / NCEP / Servicio Meteorológico Nacional de EE. UU."
     },
     "Control": {
-        "ja": "操作"
+        "ja": "操作",
+        "zh": "控制",
+        "fr": "Contrôle",
+        "de": "Steuerung",
+        "es": "Control"
     },
     "Current Conditions": {
-        "ja": "現在状況"
+        "ja": "現在状況",
+        "zh": "当前状况",
+        "fr": "Conditions actuelles",
+        "de": "Aktuelle Bedingungen",
+        "es": "Condiciones actuales"
     },
     "Now": {
-        "ja": "最新"
+        "ja": "最新",
+        "zh": "现在",
+        "fr": "Maintenant",
+        "de": "Jetzt",
+        "es": "Ahora"
     },
     "-1 Day": {
-        "ja": "前日"
+        "ja": "前日",
+        "zh": "前一天",
+        "fr": "-1 Jour",
+        "de": "-1 Tag",
+        "es": "-1 Día"
     },
     "-3 Hours": {
-        "ja": "3時間前"
+        "ja": "3時間前",
+        "zh": "3小时前",
+        "fr": "-3 Heures",
+        "de": "-3 Stunden",
+        "es": "-3 Horas"
     },
     "+3 Hours": {
-        "ja": "3時間後"
+        "ja": "3時間後",
+        "zh": "3小时后",
+        "fr": "+3 Heures",
+        "de": "+3 Stunden",
+        "es": "+3 Horas"
     },
     "+1 Day": {
-        "ja": "前日"
+        "ja": "前日",
+        "zh": "后一天",
+        "fr": "+1 Jour",
+        "de": "+1 Tag",
+        "es": "+1 Día"
     },
     "Current Position": {
-        "ja": "現在地"
+        "ja": "現在地",
+        "zh": "当前位置",
+        "fr": "Position actuelle",
+        "de": "Aktuelle Position",
+        "es": "Posición actual"
     },
     "Height": {
-        "ja": "高度"
+        "ja": "高度",
+        "zh": "高度",
+        "fr": "Hauteur",
+        "de": "Höhe",
+        "es": "Altura"
     },
     "Overlay": {
-        "ja": "レイヤー"
+        "ja": "レイヤー",
+        "zh": "叠加层",
+        "fr": "Superposition",
+        "de": "Überlagerung",
+        "es": "Superposición"
     },
     "None": {
-        "ja": "無"
+        "ja": "無",
+        "zh": "无",
+        "fr": "Aucun",
+        "de": "Keine",
+        "es": "Ninguno"
     },
     "Wind": {
-        "ja": "風速"
+        "ja": "風速",
+        "zh": "风",
+        "fr": "Vent",
+        "de": "Wind",
+        "es": "Viento"
     },
     "Projection": {
-        "ja": "投影法"
+        "ja": "投影法",
+        "zh": "投影",
+        "fr": "Projection",
+        "de": "Projektion",
+        "es": "Proyección"
     },
     "Atlantis": {
-        "ja": "アトランティス"
+        "ja": "アトランティス",
+        "zh": "亚特兰蒂斯",
+        "fr": "Atlantide",
+        "de": "Atlantis",
+        "es": "Atlántida"
     },
     "Azimuthal Equidistant": {
-        "ja": "正距方位"
+        "ja": "正距方位",
+        "zh": "等距方位",
+        "fr": "Azimutal équidistant",
+        "de": "Azimutal äquidistant",
+        "es": "Azimutal equidistante"
     },
     "Conic Equidistant": {
-        "ja": "正距円錐"
+        "ja": "正距円錐",
+        "zh": "等距圆锥",
+        "fr": "Conique équidistant",
+        "de": "Konisch äquidistant",
+        "es": "Cónica equidistante"
     },
     "Equirectangular": {
-        "ja": "正距円筒"
+        "ja": "正距円筒",
+        "zh": "等距圆柱",
+        "fr": "Équirectangulaire",
+        "de": "Äquidistant zylindrisch",
+        "es": "Equirrectangular"
     },
     "Orthographic": {
-        "ja": "正射"
+        "ja": "正射",
+        "zh": "正射",
+        "fr": "Orthographique",
+        "de": "Orthografisch",
+        "es": "Ortográfico"
     },
     "Stereographic": {
-        "ja": "平射"
+        "ja": "平射",
+        "zh": "立体",
+        "fr": "Stéréographique",
+        "de": "Stereografisch",
+        "es": "Estereográfico"
     },
     "Waterman Butterfly": {
-        "ja": "ウォーターマン蝶型"
+        "ja": "ウォーターマン蝶型",
+        "zh": "沃特曼蝴蝶",
+        "fr": "Papillon Waterman",
+        "de": "Waterman Schmetterling",
+        "es": "Mariposa Waterman"
     },
     "Winkel Tripel": {
-        "ja": "ヴィンケル第3"
+        "ja": "ヴィンケル第3",
+        "zh": "温克尔三重",
+        "fr": "Winkel Tripel",
+        "de": "Winkel Tripel",
+        "es": "Winkel Tripel"
     },
     "about": {
-        "ja": "サイトについて"
+        "ja": "サイトについて",
+        "zh": "关于",
+        "fr": "À propos",
+        "de": "Über",
+        "es": "Acerca de"
     },
     "about earth": {
-        "ja": "地球について"
+        "ja": "地球について",
+        "zh": "关于地球",
+        "fr": "À propos de la Terre",
+        "de": "Über die Erde",
+        "es": "Acerca de la Tierra"
     },
     "a visualization of global weather conditions": {
-        "ja": "世界中の気象状況がビジュアライズ"
+        "ja": "世界中の気象状況がビジュアライズ",
+        "zh": "全球天气状况的可视化",
+        "fr": "une visualisation des conditions météorologiques mondiales",
+        "de": "eine Visualisierung der globalen Wetterbedingungen",
+        "es": "una visualización de las condiciones meteorológicas globales"
     },
     "forecast by supercomputers": {
-        "ja": "スーパーコンピュータが予報"
+        "ja": "スーパーコンピュータが予報",
+        "zh": "超级计算机预测",
+        "fr": "prévision par superordinateurs",
+        "de": "Vorhersage durch Supercomputer",
+        "es": "pronóstico por supercomputadoras"
     },
     "updated every three hours": {
-        "ja": "３時間ごとの更新"
+        "ja": "３時間ごとの更新",
+        "zh": "每三小时更新",
+        "fr": "mis à jour toutes les trois heures",
+        "de": "aktualisiert alle drei Stunden",
+        "es": "actualizado cada tres horas"
     },
     "Community": {
-        "ja": "コミュニティ"
+        "ja": "コミュニティ",
+        "zh": "社区",
+        "fr": "Communauté",
+        "de": "Gemeinschaft",
+        "es": "Comunidad"
     },
     "community": {
-        "ja": "コミュニティ"
+        "ja": "コミュニティ",
+        "zh": "社区",
+        "fr": "communauté",
+        "de": "Gemeinschaft",
+        "es": "comunidad"
     },
     "Author": {
-        "ja": "作り手"
+        "ja": "作り手",
+        "zh": "作者",
+        "fr": "Auteur",
+        "de": "Autor",
+        "es": "Autor"
     },
     "Source": {
-        "ja": "ソースコード"
+        "ja": "ソースコード",
+        "zh": "源代码",
+        "fr": "Source",
+        "de": "Quelle",
+        "es": "Fuente"
     },
     "Modules": {
-        "ja": "使用ライブラリ"
+        "ja": "使用ライブラリ",
+        "zh": "使用库",
+        "fr": "Modules",
+        "de": "Module",
+        "es": "Módulos"
     },
     "Weather Data": {
-        "ja": "天気予報データ"
+        "ja": "天気予報データ",
+        "zh": "天气预报数据",
+        "fr": "Données météorologiques",
+        "de": "Wetterdaten",
+        "es": "Datos meteorológicos"
     },
     "GRIB/NetCDF Decoder": {
-        "ja": "GRIB/NetCDF デコーダ"
+        "ja": "GRIB/NetCDF デコーダ",
+        "zh": "GRIB/NetCDF 解码器",
+        "fr": "Décodeur GRIB/NetCDF",
+        "de": "GRIB/NetCDF-Dekoder",
+        "es": "Decodificador GRIB/NetCDF"
     },
     "Geographic Data": {
-        "ja": "地理データ"
+        "ja": "地理データ",
+        "zh": "地理数据",
+        "fr": "Données géographiques",
+        "de": "Geografische Daten",
+        "es": "Datos geográficos"
     },
     "Font": {
-        "ja": "フォント"
+        "ja": "フォント",
+        "zh": "字体",
+        "fr": "Police",
+        "de": "Schriftart",
+        "es": "Fuente"
     },
     "Earlier Work": {
-        "ja": "関連サイト"
+        "ja": "関連サイト",
+        "zh": "相关网站",
+        "fr": "Travaux antérieurs",
+        "de": "Frühere Arbeiten",
+        "es": "Trabajos anteriores"
     },
     "Tokyo Wind Map": {
-        "ja": "東京風速"
+        "ja": "東京風速",
+        "zh": "东京风速",
+        "fr": "Carte du vent de Tokyo",
+        "de": "Tokio Windkarte",
+        "es": "Mapa del viento de Tokio"
     },
     "Inspiration": {
-        "ja": "インスピレーション"
+        "ja": "インスピレーション",
+        "zh": "灵感",
+        "fr": "Inspiration",
+        "de": "Inspiration",
+        "es": "Inspiración"
     },
     "atmospheric pressure corresponds roughly to altitude": {
-        "ja": "各気圧によるおおむねの高度"
+        "ja": "各気圧によるおおむねの高度",
+        "zh": "大气压力大致对应高度",
+        "fr": "la pression atmosphérique correspond approximativement à l'altitude",
+        "de": "der atmosphärische Druck entspricht ungefähr der Höhe",
+        "es": "la presión atmosférica corresponde aproximadamente a la altitud"
     },
     "several pressure surfaces are meteorologically interesting": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "note: 1 hectopascal (hPa) ≡ 1 millibar (mb)": {
-        "ja": "note: 1 ヘクトパスカル (hPa) ≡ 1 ミリバール (mb)"
+        "ja": "note: 1 ヘクトパスカル (hPa) ≡ 1 ミリバール (mb)",
+        "zh": "注：1 百帕 (hPa) ≡ 1 毫巴 (mb)",
+        "fr": "note: 1 hectopascal (hPa) ≡ 1 millibar (mb)",
+        "de": "Hinweis: 1 Hektopascal (hPa) ≡ 1 Millibar (mb)",
+        "es": "nota: 1 hectopascal (hPa) ≡ 1 milibar (mb)"
     },
     "surface conditions": {
-        "ja": "地上付近"
+        "ja": "地上付近",
+        "zh": "地表附近",
+        "fr": "conditions de surface",
+        "de": "Oberflächenbedingungen",
+        "es": "condiciones de superficie"
     },
     "http://en.wikipedia.org/wiki/Planetary_boundary_layer": {
-        "ja": "http://ja.wikipedia.org/wiki/大気境界層"
+        "ja": "http://ja.wikipedia.org/wiki/大気境界層",
+        "zh": "http://zh.wikipedia.org/wiki/行星边界层",
+        "fr": "http://fr.wikipedia.org/wiki/Couche_limite_planétaire",
+        "de": "http://de.wikipedia.org/wiki/Planetare_Grenzschicht",
+        "es": "http://es.wikipedia.org/wiki/Capa_límite_planetaria"
     },
     "planetary boundary": {
-        "ja": "大気境界層"
+        "ja": "大気境界層",
+        "zh": "行星边界层",
+        "fr": "couche limite planétaire",
+        "de": "planetare Grenzschicht",
+        "es": "capa límite planetaria"
     },
     ", low" : {
-        "ja": "、低"
+        "ja": "、低",
+        "zh": "、低",
+        "fr": ", bas",
+        "de": ", niedrig",
+        "es": ", bajo"
     },
     ", high": {
-        "ja": "、高"
+        "ja": "、高",
+        "zh": "、高",
+        "fr": ", haut",
+        "de": ", hoch",
+        "es": ", alto"
     },
     "http://en.wikipedia.org/wiki/Vorticity": {
-        "ja": "http://ja.wikipedia.org/wiki/渦度"
+        "ja": "http://ja.wikipedia.org/wiki/渦度",
+        "zh": "http://zh.wikipedia.org/wiki/涡度",
+        "fr": "http://fr.wikipedia.org/wiki/Vorticité",
+        "de": "http://de.wikipedia.org/wiki/Vortizität",
+        "es": "http://es.wikipedia.org/wiki/Vorticidad"
     },
     "vorticity": {
-        "ja": "渦度"
+        "ja": "渦度",
+        "zh": "涡度",
+        "fr": "vorticité",
+        "de": "Vortizität",
+        "es": "vorticidad"
     },
     "http://en.wikipedia.org/wiki/Jet_stream": {
-        "ja": "http://ja.wikipedia.org/wiki/ジェット気流"
+        "ja": "http://ja.wikipedia.org/wiki/ジェット気流",
+        "zh": "http://zh.wikipedia.org/wiki/急流",
+        "fr": "http://fr.wikipedia.org/wiki/Courant-jet",
+        "de": "http://de.wikipedia.org/wiki/Strahlstrom",
+        "es": "http://es.wikipedia.org/wiki/Corriente_en_chorro"
     },
     "jet stream": {
-        "ja": "ジェット気流"
+        "ja": "ジェット気流",
+        "zh": "急流",
+        "fr": "courant-jet",
+        "de": "Strahlstrom",
+        "es": "corriente en chorro"
     },
     "http://en.wikipedia.org/wiki/Stratosphere": {
-        "ja": "http://ja.wikipedia.org/wiki/成層圏"
+        "ja": "http://ja.wikipedia.org/wiki/成層圏",
+        "zh": "http://zh.wikipedia.org/wiki/平流层",
+        "fr": "http://fr.wikipedia.org/wiki/Stratosphère",
+        "de": "http://de.wikipedia.org/wiki/Stratosphäre",
+        "es": "http://es.wikipedia.org/wiki/Estratosfera"
     },
     "stratosphere": {
-        "ja": "成層圏"
+        "ja": "成層圏",
+        "zh": "平流层",
+        "fr": "stratosphère",
+        "de": "Stratosphäre",
+        "es": "estratosfera"
     },
     "even more stratosphere": {
-        "ja": "もっと成層圏"
+        "ja": "もっと成層圏",
+        "zh": "更高的平流层",
+        "fr": "encore plus de stratosphère",
+        "de": "noch mehr Stratosphäre",
+        "es": "aún más estratosfera"
     },
     "weather and ocean data are generated from numerical models": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "implies no guarantee of accuracy": {
-        "ja": "は正確な情報を提供するためのものではありません"
+        "ja": "は正確な情報を提供するためのものではありません",
+        "zh": "不保证准确性",
+        "fr": "n'implique aucune garantie d'exactitude",
+        "de": "bedeutet keine Garantie für Genauigkeit",
+        "es": "no implica garantía de precisión"
     },
     "/jp": {
-        "ja": "/"
+        "ja": "/",
+        "zh": "/zh",
+        "fr": "/fr",
+        "de": "/de",
+        "es": "/es"
     },
     "日本語": {
-        "ja": "English"
+        "ja": "English",
+        "zh": "中文",
+        "fr": "Français",
+        "de": "Deutsch",
+        "es": "Español"
+    },
+    "English": {
+        "ja": "日本語",
+        "zh": "English",
+        "fr": "English",
+        "de": "English",
+        "es": "English"
+    },
+    "中文": {
+        "ja": "日本語",
+        "zh": "English",
+        "fr": "Français",
+        "de": "Deutsch",
+        "es": "Español"
+    },
+    "Français": {
+        "ja": "日本語",
+        "zh": "中文",
+        "fr": "English",
+        "de": "Deutsch",
+        "es": "Español"
+    },
+    "Deutsch": {
+        "ja": "日本語",
+        "zh": "中文",
+        "fr": "Français",
+        "de": "English",
+        "es": "Español"
+    },
+    "Español": {
+        "ja": "日本語",
+        "zh": "中文",
+        "fr": "Français",
+        "de": "Deutsch",
+        "es": "English"
     },
     "Hosting": {
-        "ja": "ホスティング"
+        "ja": "ホスティング",
+        "zh": "托管",
+        "fr": "Hébergement",
+        "de": "Hosting",
+        "es": "Alojamiento"
     },
     "Scale": {
-        "ja": "スケール"
+        "ja": "スケール",
+        "zh": "比例尺",
+        "fr": "Échelle",
+        "de": "Maßstab",
+        "es": "Escala"
     },
     "DataSource": {
         "en": "Source",
-        "ja": "発信源"
+        "ja": "発信源",
+        "zh": "数据源",
+        "fr": "Source",
+        "de": "Datenquelle",
+        "es": "Fuente de datos"
     },
     "Sfc": {
-        "ja": "地上"
+        "ja": "地上",
+        "zh": "地表",
+        "fr": "Surface",
+        "de": "Oberfläche",
+        "es": "Superficie"
     },
     "Surface": {
-        "ja": "地上"
+        "ja": "地上",
+        "zh": "地表",
+        "fr": "Surface",
+        "de": "Oberfläche",
+        "es": "Superficie"
     },
     "Wind Speed": {
-        "ja": "風速"
+        "ja": "風速",
+        "zh": "风速",
+        "fr": "Vitesse du vent",
+        "de": "Windgeschwindigkeit",
+        "es": "Velocidad del viento"
     },
     "Temp": {
-        "ja": "気温"
+        "ja": "気温",
+        "zh": "温度",
+        "fr": "Temp",
+        "de": "Temp",
+        "es": "Temp"
     },
     "Temperature": {
-        "ja": "気温"
+        "ja": "気温",
+        "zh": "温度",
+        "fr": "Température",
+        "de": "Temperatur",
+        "es": "Temperatura"
     },
     "Total Cloud Water": {
-        "ja": "雲水量"
+        "ja": "雲水量",
+        "zh": "总云水量",
+        "fr": "Eau nuageuse totale",
+        "de": "Gesamtes Wolkenwasser",
+        "es": "Agua nubosa total"
     },
     "TCW": {
-        "ja": "雲水量"
+        "ja": "雲水量",
+        "zh": "总云水量",
+        "fr": "Eau nuageuse totale",
+        "de": "Gesamtes Wolkenwasser",
+        "es": "Agua nubosa total"
     },
     "Total Precipitable Water": {
-        "ja": "可降水量"
+        "ja": "可降水量",
+        "zh": "可降水量",
+        "fr": "Eau précipitable totale",
+        "de": "Gesamtes niederschlagbares Wasser",
+        "es": "Agua precipitable total"
     },
     "TPW": {
-        "ja": "可降水量"
+        "ja": "可降水量",
+        "zh": "可降水量",
+        "fr": "Eau précipitable totale",
+        "de": "Gesamtes niederschlagbares Wasser",
+        "es": "Agua precipitable total"
     },
     "http://en.wikipedia.org/wiki/Precipitable_water": {
-        "ja": "http://ja.wikipedia.org/wiki/可降水量"
+        "ja": "http://ja.wikipedia.org/wiki/可降水量",
+        "zh": "http://zh.wikipedia.org/wiki/可降水量",
+        "fr": "http://fr.wikipedia.org/wiki/Eau_précipitable",
+        "de": "http://de.wikipedia.org/wiki/Niederschlagbares_Wasser",
+        "es": "http://es.wikipedia.org/wiki/Agua_precipitable"
     },
     "Mean Sea Level Pressure": {
-        "ja": "海面更正気圧"
+        "ja": "海面更正気圧",
+        "zh": "平均海平面气压",
+        "fr": "Pression atmosphérique moyenne au niveau de la mer",
+        "de": "Mittlerer Luftdruck auf Meereshöhe",
+        "es": "Presión atmosférica media al nivel del mar"
     },
     "MSLP": {
-        "ja": "海面更正"
+        "ja": "海面更正",
+        "zh": "海平面气压",
+        "fr": "Pression atmosphérique moyenne au niveau de la mer",
+        "de": "Mittlerer Luftdruck auf Meereshöhe",
+        "es": "Presión atmosférica media al nivel del mar"
     },
     "http://en.wikipedia.org/wiki/Atmospheric_pressure#Mean_sea_level_pressure": {
-        "ja": "http://ja.wikipedia.org/wiki/海面更正"
+        "ja": "http://ja.wikipedia.org/wiki/海面更正",
+        "zh": "http://zh.wikipedia.org/wiki/大气压#平均海平面气压",
+        "fr": "http://fr.wikipedia.org/wiki/Pression_atmosphérique#Pression_moyenne_au_niveau_de_la_mer",
+        "de": "http://de.wikipedia.org/wiki/Atmosphärischer_Druck#Mittlerer_Luftdruck_auf_Meereshöhe",
+        "es": "http://es.wikipedia.org/wiki/Presión_atmosférica#Presión_media_al_nivel_del_mar"
     },
     "several pressure layers are meteorologically interesting": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "they show data assuming the earth is completely smooth": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "near sea level conditions": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "the \"Surface\" layer represents conditions at ground or water level": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "this layer follows the contours of mountains, valleys, etc.": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "overlays show another dimension of data using color": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "some overlays are valid at a specific height": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "while others are valid for the entire thickness of the atmosphere": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "wind speed at specified height": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "temperature at specified height": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "total amount of water in a column of air": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "stretching from ground to space": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "total amount of water in clouds": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "in a column of air from ground to space": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "air pressure reduced to sea level": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "Grid": {
-        "ja": "グリッド"
+        "ja": "グリッド",
+        "zh": "网格",
+        "fr": "Grille",
+        "de": "Gitter",
+        "es": "Cuadrícula"
     },
     "Toggle Grid": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "Mode": {
-        "ja": "モード"
+        "ja": "モード",
+        "zh": "模式",
+        "fr": "Mode",
+        "de": "Modus",
+        "es": "Modo"
     },
     "Ocean": {
-        "ja": "海"
+        "ja": "海",
+        "zh": "海洋",
+        "fr": "Océan",
+        "de": "Ozean",
+        "es": "Océano"
     },
     "Animate": {
-        "ja": "動画"
+        "ja": "動画",
+        "zh": "动画",
+        "fr": "Animation",
+        "de": "Animation",
+        "es": "Animación"
     },
     "Currents": {
-        "ja": "海流"
+        "ja": "海流",
+        "zh": "洋流",
+        "fr": "Courants",
+        "de": "Strömungen",
+        "es": "Corrientes"
     },
     "ocean surface current estimates": {
-        "ja": "海流"
+        "ja": "海流",
+        "zh": "海洋表面洋流估计",
+        "fr": "estimations des courants de surface océaniques",
+        "de": "Schätzungen der Meeresoberflächenströmungen",
+        "es": "estimaciones de corrientes superficiales oceánicas"
     },
     "updated every five days": {
-        "ja": "５日ごとの更新"
+        "ja": "５日ごとの更新",
+        "zh": "每五天更新",
+        "fr": "mis à jour tous les cinq jours",
+        "de": "aktualisiert alle fünf Tage",
+        "es": "actualizado cada cinco días"
     },
     "Ocean Currents Data": {
-        "ja": "海流データ"
+        "ja": "海流データ",
+        "zh": "洋流数据",
+        "fr": "Données des courants océaniques",
+        "de": "Meeresströmungsdaten",
+        "es": "Datos de corrientes oceánicas"
     },
     "Earth & Space Research": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "sponsor": {
-        "ja": ""
+        "ja": "",
+        "zh": "",
+        "fr": "",
+        "de": "",
+        "es": ""
     },
     "Relative Humidity": {
-        "ja": "相対湿度"
+        "ja": "相対湿度",
+        "zh": "相对湿度",
+        "fr": "Humidité relative",
+        "de": "Relative Luftfeuchtigkeit",
+        "es": "Humedad relativa"
     },
     "RH": {
-        "ja": "相対湿度"
+        "ja": "相対湿度",
+        "zh": "相对湿度",
+        "fr": "Humidité relative",
+        "de": "Relative Luftfeuchtigkeit",
+        "es": "Humedad relativa"
     },
     "Air Density": {
-        "ja": "空気密度"
+        "ja": "空気密度",
+        "zh": "空气密度",
+        "fr": "Densité de l'air",
+        "de": "Luftdichte",
+        "es": "Densidad del aire"
     },
     "AD": {
-        "ja": "空気密度"
+        "ja": "空気密度",
+        "zh": "空气密度",
+        "fr": "Densité de l'air",
+        "de": "Luftdichte",
+        "es": "Densidad del aire"
     },
     "Wind Power Density": {
-        "ja": "風力エネルギー密度"
+        "ja": "風力エネルギー密度",
+        "zh": "风能密度",
+        "fr": "Densité de puissance éolienne",
+        "de": "Windleistungsdichte",
+        "es": "Densidad de potencia eólica"
     },
     "WPD": {
-        "ja": "WPD"
+        "ja": "WPD",
+        "zh": "WPD",
+        "fr": "DPE",
+        "de": "WLD",
+        "es": "DPE"
     },
     "Air": {
         "ja": "大気圏",
-        "comment": "Japanese version means 'Atmosphere'"
+        "zh": "大气",
+        "fr": "Air",
+        "de": "Luft",
+        "es": "Aire"
     }
 }
