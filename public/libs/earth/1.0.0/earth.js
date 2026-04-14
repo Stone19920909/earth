@@ -16,9 +16,6 @@
     var MIN_SLEEP_TIME = 25;                  // amount of time a task waits before resuming (millis)
     var MIN_MOVE = 4;                         // slack before a drag operation beings (pixels)
     var MOVE_END_WAIT = 1000;                 // time to wait for a move operation to be considered done (millis)
-    var INERTIA_FACTOR = 0.95;                // 惯性衰减因子
-    var INERTIA_MIN_VELOCITY = 0.1;           // 最小速度阈值
-    var INERTIA_SAMPLE_COUNT = 5;             // 速度采样数量
 
     var OVERLAY_ALPHA = Math.floor(0.4*255);  // overlay transparency (on scale [0, 255])
     var INTENSITY_SCALE_STEP = 10;            // step size of particle intensity color scale
@@ -110,8 +107,6 @@
      */
     function buildInputController() {
         var globe, op = null;
-        var inertiaAnimationId = null;
-        var velocitySamples = [];
 
         /**
          * @returns {Object} an object to represent the state for one move operation.
@@ -121,146 +116,17 @@
                 type: "click",  // initially assumed to be a click operation
                 startMouse: startMouse,
                 startScale: startScale,
-                manipulator: globe.manipulator(startMouse, startScale),
-                lastMouse: startMouse,
-                lastTime: Date.now()
+                manipulator: globe.manipulator(startMouse, startScale)
             };
-        }
-
-        /**
-         * 记录速度样本用于惯性计算
-         */
-        function recordVelocitySample(currentMouse, currentTime) {
-            if (op && op.lastMouse) {
-                var dx = currentMouse[0] - op.lastMouse[0];
-                var dy = currentMouse[1] - op.lastMouse[1];
-                var dt = currentTime - op.lastTime;
-                
-                if (dt > 0) {
-                    velocitySamples.push({
-                        vx: dx / dt,
-                        vy: dy / dt,
-                        time: currentTime
-                    });
-                    
-                    // 只保留最近的几个样本
-                    while (velocitySamples.length > INERTIA_SAMPLE_COUNT) {
-                        velocitySamples.shift();
-                    }
-                }
-                
-                op.lastMouse = currentMouse;
-                op.lastTime = currentTime;
-            }
-        }
-
-        /**
-         * 计算平均速度
-         */
-        function calculateAverageVelocity() {
-            if (velocitySamples.length === 0) {
-                return { vx: 0, vy: 0 };
-            }
-            
-            var totalVx = 0;
-            var totalVy = 0;
-            var count = velocitySamples.length;
-            
-            for (var i = 0; i < count; i++) {
-                totalVx += velocitySamples[i].vx;
-                totalVy += velocitySamples[i].vy;
-            }
-            
-            return {
-                vx: totalVx / count,
-                vy: totalVy / count
-            };
-        }
-
-        /**
-         * 启动惯性滚动动画
-         */
-        function startInertia() {
-            if (inertiaAnimationId) {
-                cancelAnimationFrame(inertiaAnimationId);
-            }
-            
-            var velocity = calculateAverageVelocity();
-            var vx = velocity.vx;
-            var vy = velocity.vy;
-            
-            // 如果速度太小，不启动惯性
-            if (Math.abs(vx) < INERTIA_MIN_VELOCITY && Math.abs(vy) < INERTIA_MIN_VELOCITY) {
-                return;
-            }
-            
-            var lastTime = Date.now();
-            var currentMouse = op ? op.lastMouse : [0, 0];
-            var currentScale = op ? op.startScale : 1;
-            
-            // 创建一个新的操作器用于惯性滚动
-            var inertiaManipulator = globe.manipulator(currentMouse, currentScale);
-            
-            function animate() {
-                var now = Date.now();
-                var dt = now - lastTime;
-                lastTime = now;
-                
-                // 应用衰减
-                vx *= INERTIA_FACTOR;
-                vy *= INERTIA_FACTOR;
-                
-                // 计算新的鼠标位置
-                var newMouse = [
-                    currentMouse[0] + vx * dt,
-                    currentMouse[1] + vy * dt
-                ];
-                
-                // 移动地图
-                inertiaManipulator.move(newMouse, currentScale);
-                dispatch.trigger("move");
-                
-                currentMouse = newMouse;
-                
-                // 检查是否应该停止
-                if (Math.abs(vx) > INERTIA_MIN_VELOCITY || Math.abs(vy) > INERTIA_MIN_VELOCITY) {
-                    inertiaAnimationId = requestAnimationFrame(animate);
-                } else {
-                    // 惯性结束
-                    inertiaManipulator.end();
-                    signalEnd();
-                }
-            }
-            
-            dispatch.trigger("moveStart");
-            inertiaAnimationId = requestAnimationFrame(animate);
-        }
-
-        /**
-         * 停止惯性滚动
-         */
-        function stopInertia() {
-            if (inertiaAnimationId) {
-                cancelAnimationFrame(inertiaAnimationId);
-                inertiaAnimationId = null;
-            }
-            velocitySamples = [];
         }
 
         var zoom = d3.behavior.zoom()
             .on("zoomstart", function() {
-                stopInertia();  // 停止任何正在进行的惯性滚动
                 op = op || newOp(d3.mouse(this), zoom.scale());  // a new operation begins
             })
             .on("zoom", function() {
                 var currentMouse = d3.mouse(this), currentScale = d3.event.scale;
-                var currentTime = Date.now();
-                
                 op = op || newOp(currentMouse, 1);  // Fix bug on some browsers where zoomstart fires out of order.
-                
-                // 记录速度样本
-                recordVelocitySample(currentMouse, currentTime);
-                
                 if (op.type === "click" || op.type === "spurious") {
                     var distanceMoved = µ.distance(currentMouse, op.startMouse);
                     if (currentScale === op.startScale && distanceMoved < MIN_MOVE) {
@@ -273,8 +139,6 @@
                 }
                 if (currentScale != op.startScale) {
                     op.type = "zoom";  // whenever a scale change is detected, (stickily) switch to a zoom operation
-                    // 缩放时清除速度样本，不进行惯性滚动
-                    velocitySamples = [];
                 }
 
                 // when zooming, ignore whatever the mouse is doing--really cleans up behavior on touch devices
@@ -285,10 +149,6 @@
                 op.manipulator.end();
                 if (op.type === "click") {
                     dispatch.trigger("click", op.startMouse, globe.projection.invert(op.startMouse) || []);
-                }
-                else if (op.type === "drag") {
-                    // 拖拽结束时启动惯性滚动
-                    startInertia();
                 }
                 else if (op.type !== "spurious") {
                     signalEnd();
