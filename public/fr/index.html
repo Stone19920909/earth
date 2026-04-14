@@ -2,14 +2,14 @@
 <html itemscope itemtype="http://schema.org/Map" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
 <head>
     <meta charset="utf-8"/>
-    <title>earth :: an animated map of global wind and weather</title>
-    <meta itemprop="name"                                      content="地球"/>
-    <meta itemprop="description"     name="description"        content="世界中の天気状況がビジュアライズ"/>
+    <title>Terre :: une carte animée du vent et de la météo mondiaux</title>
+    <meta itemprop="name"                                      content="Terre"/>
+    <meta itemprop="description"     name="description"        content="une carte animée du vent et de la météo mondiaux"/>
     <meta itemprop="author"          name="author"             content="Cameron Beccario"/>
 
     <meta property="og:type"        content="website"/>
-    <meta property="og:title"       content="地球"/>
-    <meta property="og:description" content="世界中の天気状況がビジュアライズ。コミュニティはこちらへ：https://www.facebook.com/EarthWindMap"/>
+    <meta property="og:title"       content="Terre"/>
+    <meta property="og:description" content="Une carte animée du vent et de la météo mondiaux. Visitez la communauté à https://www.facebook.com/EarthWindMap"/>
     <meta property="og:url"         content="http://earth.nullschool.net"/>
     <meta property="og:image"       content="http://earth.nullschool.net/preview.jpg"/>
 
@@ -20,10 +20,14 @@
 
     <link rel="alternate" hreflang="x-default" href="http://earth.nullschool.net/"/>
     <link rel="alternate" hreflang="ja" href="http://earth.nullschool.net/jp/"/>
+    <link rel="alternate" hreflang="zh" href="http://earth.nullschool.net/zh/"/>
+    <link rel="alternate" hreflang="fr" href="http://earth.nullschool.net/fr/"/>
+    <link rel="alternate" hreflang="de" href="http://earth.nullschool.net/de/"/>
+    <link rel="alternate" hreflang="es" href="http://earth.nullschool.net/es/"/>
 </head>
-<body data-lang="ja">
+<body data-lang="fr">
 
-    <!--[if lte IE 8]><p id="warn">このサイトはIE9より以上が必要です。</p><![endif]-->
+    <!--[if lte IE 8]><p id="warn">Ce site nécessite IE9 ou plus récent.</p><![endif]-->
 
     <div id="display">
         <svg id="map" class="fill-screen" xmlns="http://www.w3.org/2000/svg" version="1.1"></svg>
@@ -33,7 +37,7 @@
     </div>
 
     <div id="sponsor" class="invisible">
-        <p><span id="sponsor-hide" class="text-button invisible"> ✕ </span>コミュニティ</p>
+        <p><span id="sponsor-hide" class="text-button invisible"> ✕ </span>communauté</p>
         <a id="sponsor-link" href="https://www.facebook.com/EarthWindMap">EarthWindMap</a>
     </div>
 
@@ -55,33 +59,33 @@
         </div>
 
         <p id="earth">
-            <span id="show-menu" class="text-button" title="menu">地球</span>
+            <span id="show-menu" class="text-button" title="menu">Terre</span>
             <span id="progress" class="invisible"></span>
         </p>
 
         <div id="menu" class="invisible">
-            <p>日付 | <span
+            <p>Date | <span
                 id="data-date" class="local"></span> <span
                 id="toggle-zone" class="text-button"></span>
             </p>
-            <p>データ | <span id="data-layer"></span></p>
-            <p><span id="scale-label">スケール | </span><canvas id="scale"></canvas></p>
-            <p>発信源 | <span id="data-center"></span></p>
-            <p>操作 | <span
-                class="text-button" id="nav-now" title="現在状況">最新</span><span
+            <p>Données | <span id="data-layer"></span></p>
+            <p><span id="scale-label">Échelle | </span><canvas id="scale"></canvas></p>
+            <p>Source | <span id="data-center"></span></p>
+            <p>Contrôle | <span
+                class="text-button" id="nav-now" title="Conditions actuelles">Maintenant</span><span
                 class="text-button" id="nav-backward-more"> « </span> – <span
                 class="text-button" id="nav-backward"> ‹ </span> – <span
                 class="text-button" id="nav-forward"> › </span> – <span
                 class="text-button" id="nav-forward-more"> » </span><span
-                class="text-button" id="show-location" title="現在地">〖◯〗</span><span
-                class="text-button" id="option-show-grid" title="Toggle Grid">グリッド</span>
+                class="text-button" id="show-location" title="Position actuelle">〖◯〗</span><span
+                class="text-button" id="option-show-grid" title="Toggle Grid">Grille</span>
             </p>
-            <p>モード | <span
-                class="text-button" id="wind-mode-enable">大気圏</span> – <span
-                class="text-button" id="ocean-mode-enable">海</span>
+            <p>Mode | <span
+                class="text-button" id="wind-mode-enable">Air</span> – <span
+                class="text-button" id="ocean-mode-enable">Océan</span>
             </p>
-            <p class="wind-mode">高度 | <span
-                class="surface text-button" id="surface-level" title="地上">地上</span> – <span
+            <p class="wind-mode">Hauteur | <span
+                class="surface text-button" id="surface-level" title="Surface">Surface</span> – <span
                 class="surface text-button" id="isobaric-1000hPa">1000</span> – <span
                 class="surface text-button" id="isobaric-850hPa">850</span> – <span
                 class="surface text-button" id="isobaric-700hPa">700</span> – <span
@@ -90,36 +94,36 @@
                 class="surface text-button" id="isobaric-70hPa">70</span> – <span
                 class="surface text-button" id="isobaric-10hPa">10</span> hPa
             </p>
-            <p class="wind-mode">レイヤー | <span
-                class="text-button" id="overlay-off">無</span> – <span
-                class="text-button" id="overlay-wind" title="風速">風速</span> – <span
-                class="text-button" id="overlay-temp" title="気温">気温</span> – <span
-                class="text-button" id="overlay-relative_humidity" title="相対湿度">相対湿度</span> – <span
-                class="text-button" id="overlay-air_density" title="空気密度">空気密度</span> – <span
-                class="text-button" id="overlay-wind_power_density" title="風力エネルギー密度">WPD</span>
+            <p class="wind-mode">Superposition | <span
+                class="text-button" id="overlay-off">Aucun</span> – <span
+                class="text-button" id="overlay-wind" title="Vitesse du vent">Vent</span> – <span
+                class="text-button" id="overlay-temp" title="Température">Temp</span> – <span
+                class="text-button" id="overlay-relative_humidity" title="Humidité relative">RH</span> – <span
+                class="text-button" id="overlay-air_density" title="Densité de l'air">AD</span> – <span
+                class="text-button" id="overlay-wind_power_density" title="Densité de puissance éolienne">DPE</span>
             </p>
-            <p class="wind-mode"><span style="visibility:hidden">レイヤー</span> | <span
-                class="text-button" id="overlay-total_precipitable_water" title="可降水量">可降水量</span> – <span
-                class="text-button" id="overlay-total_cloud_water" title="雲水量">雲水量</span> – <span
-                class="text-button" id="overlay-mean_sea_level_pressure" title="海面更正気圧">海面更正</span>
+            <p class="wind-mode"><span style="visibility:hidden">Superposition</span> | <span
+                class="text-button" id="overlay-total_precipitable_water" title="Eau précipitable totale">Eau précipitable totale</span> – <span
+                class="text-button" id="overlay-total_cloud_water" title="Eau nuageuse totale">Eau nuageuse totale</span> – <span
+                class="text-button" id="overlay-mean_sea_level_pressure" title="Pression atmosphérique moyenne au niveau de la mer">Pression atmosphérique moyenne au niveau de la mer</span>
             </p>
-            <p class="ocean-mode invisible">動画 | <span
-                class="text-button" id="animate-currents" title="海流">海流</span>
+            <p class="ocean-mode invisible">Animation | <span
+                class="text-button" id="animate-currents" title="Courants">Courants</span>
             </p>
-            <p class="ocean-mode invisible">レイヤー | <span
-                class="text-button" id="overlay-ocean-off">無</span> – <span
-                class="text-button" id="overlay-currents" title="海流">海流</span>
+            <p class="ocean-mode invisible">Superposition | <span
+                class="text-button" id="overlay-ocean-off">Aucun</span> – <span
+                class="text-button" id="overlay-currents" title="Courants">Courants</span>
             </p>
-            <p class="ocean-mode invisible"><span style="visibility:hidden">レイヤー</span> |</p>
-            <p>投影法 | <span
-                class="proj text-button" id="atlantis" title="アトランティス">A</span> – <span
-                class="proj text-button" id="azimuthal_equidistant" title="正距方位">AE</span> – <span
-                class="proj text-button" id="conic_equidistant" title="正距円錐">CE</span> – <span
-                class="proj text-button" id="equirectangular" title="正距円筒">E</span> – <span
-                class="proj text-button" id="orthographic" title="正射">O</span> – <span
-                class="proj text-button" id="stereographic" title="平射">S</span> – <span
-                class="proj text-button" id="waterman" title="ウォーターマン蝶型">WB</span> – <span
-                class="proj text-button" id="winkel3" title="ヴィンケル第3">W3</span>
+            <p class="ocean-mode invisible"><span style="visibility:hidden">Superposition</span> |</p>
+            <p>Projection | <span
+                class="proj text-button" id="atlantis" title="Atlantide">A</span> – <span
+                class="proj text-button" id="azimuthal_equidistant" title="Azimutal équidistant">AE</span> – <span
+                class="proj text-button" id="conic_equidistant" title="Conique équidistant">CE</span> – <span
+                class="proj text-button" id="equirectangular" title="Équirectangulaire">E</span> – <span
+                class="proj text-button" id="orthographic" title="Orthographique">O</span> – <span
+                class="proj text-button" id="stereographic" title="Stéréographique">S</span> – <span
+                class="proj text-button" id="waterman" title="Papillon Waterman">WB</span> – <span
+                class="proj text-button" id="winkel3" title="Winkel Tripel">W3</span>
             </p>
             <!--<p>免責事項 | 正確な情報を提供するためのものではありません</p>-->
             <p id="lang">
@@ -131,7 +135,7 @@
                 <a href="/es" class="internal-link lang-option" data-lang="es">Español</a>
             </p>
             <p>
-                <a href="about.html" class="internal-link">サイトについて</a>
+                <a href="about.html" class="internal-link">À propos</a>
                 <a href="https://www.facebook.com/EarthWindMap" class="social-icon" title="Facebook">&#xe027;</a>
                 <a href="https://twitter.com/cambecc" class="social-icon" title="Twitter">&#xe086;</a>
             </p>
