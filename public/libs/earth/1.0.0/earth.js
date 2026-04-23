@@ -85,6 +85,7 @@
     var fieldAgent = newAgent();     // the interpolated wind vector field
     var animatorAgent = newAgent();  // the wind animator
     var overlayAgent = newAgent();   // color overlay over the animation
+    var alertsAgent = newAgent();    // the weather alerts data
 
     /**
      * The input controller is an object that translates move operations (drag and/or zoom) into mutations of the
@@ -404,6 +405,17 @@
     }
 
     /**
+     * Loads weather alerts data.
+     */
+    function buildAlerts() {
+        report.status("Loading Weather Alerts...");
+        var cancel = this.cancel;
+        return µ.loadJson("/data/weather/alerts/alerts.json").then(function(data) {
+            return cancel.requested ? null : data.alerts;
+        });
+    }
+
+    /**
      * Modifies the configuration to navigate to the chronologically next or previous data layer.
      */
     function navigate(step) {
@@ -457,10 +469,165 @@
             }
         }
 
+        function drawWeatherAlerts() {
+            var alerts = alertsAgent.value();
+            if (!alerts || alerts.length === 0) {
+                d3.selectAll(".alert-marker").remove();
+                return;
+            }
+
+            d3.selectAll(".alert-marker").remove();
+
+            var foreground = d3.select("#foreground");
+
+            alerts.forEach(function(alert) {
+                var coord = [alert.coordinates.longitude, alert.coordinates.latitude];
+                var point = globe.projection(coord);
+
+                if (!point || !_.isFinite(point[0]) || !_.isFinite(point[1])) {
+                    return;
+                }
+
+                var markerColor = "rgba(255, 0, 0, 0.8)";
+                var markerRadius = 12;
+                var pulseRadius = 20;
+
+                if (alert.level === "red") {
+                    markerColor = "rgba(255, 0, 0, 0.8)";
+                } else if (alert.level === "orange") {
+                    markerColor = "rgba(255, 165, 0, 0.8)";
+                } else if (alert.level === "yellow") {
+                    markerColor = "rgba(255, 255, 0, 0.8)";
+                } else if (alert.level === "blue") {
+                    markerColor = "rgba(0, 0, 255, 0.8)";
+                }
+
+                var alertType = "";
+                if (alert.type === "typhoon") {
+                    alertType = "🌀";
+                } else if (alert.type === "rainstorm") {
+                    alertType = "🌧️";
+                } else if (alert.type === "heatwave") {
+                    alertType = "🔥";
+                } else {
+                    alertType = "⚠️";
+                }
+
+                var group = foreground.append("g")
+                    .attr("class", "alert-marker")
+                    .attr("data-alert-id", alert.id)
+                    .style("cursor", "pointer");
+
+                group.append("circle")
+                    .attr("cx", point[0])
+                    .attr("cy", point[1])
+                    .attr("r", pulseRadius)
+                    .attr("fill", markerColor)
+                    .attr("opacity", 0.3)
+                    .attr("class", "pulse-circle");
+
+                group.append("circle")
+                    .attr("cx", point[0])
+                    .attr("cy", point[1])
+                    .attr("r", markerRadius)
+                    .attr("fill", markerColor)
+                    .attr("stroke", "white")
+                    .attr("stroke-width", 2);
+
+                group.append("text")
+                    .attr("x", point[0])
+                    .attr("y", point[1] + 5)
+                    .attr("text-anchor", "middle")
+                    .attr("font-size", "14px")
+                    .attr("pointer-events", "none")
+                    .text(alertType);
+
+                group.append("text")
+                    .attr("x", point[0])
+                    .attr("y", point[1] - markerRadius - 5)
+                    .attr("text-anchor", "middle")
+                    .attr("font-size", "10px")
+                    .attr("fill", "white")
+                    .attr("pointer-events", "none")
+                    .text(alert.level.toUpperCase());
+
+                group.on("click", function() {
+                    d3.event.stopPropagation();
+                    showAlertDetails(alert);
+                });
+            });
+        }
+
+        function showAlertDetails(alert) {
+            clearAlertDetails();
+
+            var details = alert.details;
+            d3.select("#alert-title").text(details.title);
+            d3.select("#alert-description").text(details.description);
+
+            var infoHtml = "";
+            if (details.windspeed) {
+                infoHtml += "<p><strong>风速:</strong> " + details.windspeed + "</p>";
+            }
+            if (details.pressure) {
+                infoHtml += "<p><strong>气压:</strong> " + details.pressure + "</p>";
+            }
+            if (details.rainfall) {
+                infoHtml += "<p><strong>降雨量:</strong> " + details.rainfall + "</p>";
+            }
+            if (details.temperature) {
+                infoHtml += "<p><strong>气温:</strong> " + details.temperature + "</p>";
+            }
+            if (details.movement) {
+                infoHtml += "<p><strong>移动方向:</strong> " + details.movement + "</p>";
+            }
+            if (details.duration) {
+                infoHtml += "<p><strong>持续时间:</strong> " + details.duration + "</p>";
+            }
+
+            d3.select("#alert-info").html(infoHtml);
+
+            if (details.affectedAreas && details.affectedAreas.length > 0) {
+                d3.select("#alert-affected").text("影响区域: " + details.affectedAreas.join(", "));
+            }
+
+            if (details.precautions && details.precautions.length > 0) {
+                var precautionsHtml = "<ul>";
+                details.precautions.forEach(function(precaution) {
+                    precautionsHtml += "<li>" + precaution + "</li>";
+                });
+                precautionsHtml += "</ul>";
+                d3.select("#alert-precautions").html(precautionsHtml);
+            }
+
+            if (details.validFrom && details.validUntil) {
+                var from = new Date(details.validFrom);
+                var until = new Date(details.validUntil);
+                d3.select("#alert-validity").text(
+                    "有效时间: " + from.toLocaleString() + " - " + until.toLocaleString()
+                );
+            }
+
+            d3.select("#alert-panel").classed("invisible", false);
+        }
+
+        function clearAlertDetails() {
+            d3.select("#alert-panel").classed("invisible", true);
+            d3.select("#alert-title").text("");
+            d3.select("#alert-description").text("");
+            d3.select("#alert-info").html("");
+            d3.select("#alert-affected").text("");
+            d3.select("#alert-precautions").html("");
+            d3.select("#alert-validity").text("");
+        }
+
         // Draw the location mark if one is currently visible.
         if (activeLocation.point && activeLocation.coord) {
             drawLocationMark(activeLocation.point, activeLocation.coord);
         }
+
+        // Draw weather alerts markers.
+        drawWeatherAlerts();
 
         // Throttled draw method helps with slow devices that would get overwhelmed by too many redraw events.
         var REDRAW_WAIT = 5;  // milliseconds
@@ -487,6 +654,7 @@
                     coastline.datum(mesh.coastHi);
                     lakes.datum(mesh.lakesHi);
                     d3.selectAll("path").attr("d", path);
+                    drawWeatherAlerts();
                     rendererAgent.trigger("render");
                 },
                 click: drawLocationMark
@@ -1148,6 +1316,19 @@
         inputController.on("click", showLocationDetails);
         fieldAgent.on("update", updateLocationDetails);
         d3.select("#location-close").on("click", _.partial(clearLocationDetails, true));
+
+        // Load weather alerts data
+        alertsAgent.submit(buildAlerts);
+        alertsAgent.on("update", function(alerts) {
+            if (rendererAgent.value()) {
+                rendererAgent.submit(buildRenderer, meshAgent.value(), globeAgent.value());
+            }
+        });
+
+        // Add close handler for alert panel
+        d3.select("#alert-close").on("click", function() {
+            d3.select("#alert-panel").classed("invisible", true);
+        });
 
         // Modify menu depending on what mode we're in.
         configuration.on("change:param", function(context, mode) {

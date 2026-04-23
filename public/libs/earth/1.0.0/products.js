@@ -11,6 +11,7 @@ var products = function() {
 
     var WEATHER_PATH = "/data/weather";
     var OSCAR_PATH = "/data/oscar";
+    var ALERTS_PATH = "/data/weather/alerts";
     var catalogs = {
         // The OSCAR catalog is an array of file names, sorted and prefixed with yyyyMMdd. Last item is the
         // most recent. For example: [ 20140101-abc.json, 20140106-abc.json, 20140112-abc.json, ... ]
@@ -490,6 +491,42 @@ var products = function() {
                         },
                         particles: {velocityScale: 1/4400, maxIntensity: 0.7}
                     });
+                });
+            }
+        },
+
+        "alerts": {
+            matches: _.matches({param: "alerts"}),
+            create: function(attr) {
+                return buildProduct({
+                    field: "alerts",
+                    type: "alerts",
+                    description: localize({
+                        name: {en: "Weather Alerts", ja: "気象警報"},
+                        qualifier: ""
+                    }),
+                    paths: [[ALERTS_PATH, "alerts.json"].join("/")],
+                    date: gfsDate(attr),
+                    builder: function(file) {
+                        return {
+                            header: {
+                                center: 7,
+                                centerName: "Weather Alerts"
+                            },
+                            interpolate: null,
+                            data: function() {
+                                return file.alerts;
+                            },
+                            alerts: file.alerts
+                        };
+                    },
+                    units: [],
+                    scale: {
+                        bounds: [0, 1],
+                        gradient: function() {
+                            return [0, 0, 0, 0];
+                        }
+                    }
                 });
             }
         },
