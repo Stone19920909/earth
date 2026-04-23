@@ -549,6 +549,15 @@ var µ = function() {
                         result.showGridPoints = true;
                     }
                 }
+                else if ((option = /^compare=(\w+)$/.exec(segment))) {
+                    result.compareMode = option[1];
+                }
+                else if ((option = /^dateB=(\d{4}\/\d{2}\/\d{2})$/.exec(segment))) {
+                    result.dateB = option[1];
+                }
+                else if ((option = /^hourB=(\d{4})$/.exec(segment))) {
+                    result.hourB = option[1];
+                }
             });
         }
         return result;
@@ -573,7 +582,10 @@ var µ = function() {
             var proj = [attr.projection, attr.orientation].filter(isTruthy).join("=");
             var ol = !isValue(attr.overlayType) || attr.overlayType === "default" ? "" : "overlay=" + attr.overlayType;
             var grid = attr.showGridPoints ? "grid=on" : "";
-            return [dir, attr.param, attr.surface, attr.level, ol, proj, grid].filter(isTruthy).join("/");
+            var compare = isValue(attr.compareMode) && attr.compareMode !== "off" ? "compare=" + attr.compareMode : "";
+            var dateB = isValue(attr.dateB) ? "dateB=" + attr.dateB : "";
+            var hourB = isValue(attr.hourB) ? "hourB=" + attr.hourB : "";
+            return [dir, attr.param, attr.surface, attr.level, ol, proj, grid, compare, dateB, hourB].filter(isTruthy).join("/");
         },
 
         /**

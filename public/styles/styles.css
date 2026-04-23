@@ -306,3 +306,164 @@ body {
 #closing {
     padding-bottom: 2.5rem;
 }
+
+/**************************************************************************************************
+ * Timeline Component Styles
+ **************************************************************************************************/
+
+#timeline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(5, 10, 30, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1rem 2rem;
+    z-index: 100;
+    pointer-events: all;
+}
+
+#timeline.invisible {
+    display: none;
+}
+
+#timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+#timeline-title {
+    font-size: 1.5rem;
+    color: #e2b42e;
+}
+
+#timeline-close {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+#timeline-slider-container {
+    position: relative;
+    margin: 1rem 0;
+    padding: 0 1rem;
+}
+
+#timeline-track {
+    position: relative;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.timeline-slider {
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.timeline-slider:hover {
+    transform: scale(1.15);
+}
+
+.timeline-slider.active {
+    transform: scale(1.25);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+    border-color: #e2b42e;
+}
+
+#timeline-slider-a {
+    background: #4a9eff;
+    left: 25%;
+}
+
+#timeline-slider-b {
+    background: #ff6b6b;
+    left: 75%;
+}
+
+#timeline-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+}
+
+#timeline-info strong {
+    color: #ffffff;
+}
+
+#timeline-info-a,
+#timeline-info-b {
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.15s ease;
+}
+
+#timeline-info-a {
+    color: #4a9eff;
+}
+
+#timeline-info-b {
+    color: #ff6b6b;
+}
+
+#timeline-info-a.active,
+#timeline-info-b.active {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#timeline-info-a:hover,
+#timeline-info-b:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.timeline-date {
+    font-family: monospace;
+    margin-left: 0.5rem;
+}
+
+/**************************************************************************************************
+ * Comparison Mode Styles
+ **************************************************************************************************/
+
+body.compare-active #timeline {
+    display: block;
+}
+
+body.compare-diff #overlay {
+    z-index: 60;
+}
+
+/* Active time point indicator */
+.timeline-indicator {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.5rem 1rem;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 4px;
+    font-size: 1.2rem;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.timeline-indicator.time-a {
+    color: #4a9eff;
+}
+
+.timeline-indicator.time-b {
+    color: #ff6b6b;
+}

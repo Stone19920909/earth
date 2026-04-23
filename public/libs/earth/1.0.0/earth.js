@@ -77,11 +77,24 @@
     var inputController = buildInputController();             // interprets drag/zoom operations
     var meshAgent = newAgent();      // map data for the earth
     var globeAgent = newAgent();     // the model of the globe
-    var gridAgent = newAgent();      // the grid of weather data
+    var gridAgent = newAgent();      // the grid of weather data (Time A)
     var rendererAgent = newAgent();  // the globe SVG renderer
-    var fieldAgent = newAgent();     // the interpolated wind vector field
-    var animatorAgent = newAgent();  // the wind animator
-    var overlayAgent = newAgent();   // color overlay over the animation
+    var fieldAgent = newAgent();     // the interpolated wind vector field (Time A)
+    var animatorAgent = newAgent();  // the wind animator (Time A)
+    var overlayAgent = newAgent();   // color overlay over the animation (Time A)
+
+    // Comparison mode agents for Time B
+    var gridAgentB = newAgent();     // the grid of weather data (Time B)
+    var fieldAgentB = newAgent();    // the interpolated wind vector field (Time B)
+    var animatorAgentB = newAgent(); // the wind animator (Time B)
+    var overlayAgentB = newAgent();  // color overlay over the animation (Time B)
+
+    // Timeline state
+    var timelineState = {
+        compareMode: "off",          // "off", "split", "diff"
+        activeSlider: "a",           // "a" or "b"
+        sliderValues: {a: 0, b: 1}   // 0-1 range for slider positions
+    };
 
     /**
      * The input controller is an object that translates move operations (drag and/or zoom) into mutations of the
@@ -264,6 +277,33 @@
     }
 
     /**
+     * Build grids for Time B (comparison mode)
+     */
+    function buildGridsB() {
+        var attrB = _.clone(configuration.attributes);
+        if (attrB.dateB && attrB.hourB) {
+            attrB.date = attrB.dateB;
+            attrB.hour = attrB.hourB;
+        } else {
+            return when.reject("No Time B configuration");
+        }
+
+        report.status("Downloading Time B...");
+        log.time("build grids B");
+        var cancel = this.cancel;
+        downloadsInProgress++;
+        var loaded = when.map(products.productsFor(attrB), function(product) {
+            return product.load(cancel);
+        });
+        return when.all(loaded).then(function(products) {
+            log.time("build grids B");
+            return {primaryGrid: products[0], overlayGrid: products[1] || products[0]};
+        }).ensure(function() {
+            downloadsInProgress--;
+        });
+    }
+
+    /**
      * Modifies the configuration to navigate to the chronologically next or previous data layer.
      */
     function navigate(step) {
@@ -274,6 +314,241 @@
         var next = gridAgent.value().primaryGrid.navigate(step);
         if (next) {
             configuration.save(µ.dateToConfig(next));
+        }
+    }
+
+    /**
+     * Navigate for Time B
+     */
+    function navigateB(step) {
+        if (downloadsInProgress > 0) {
+            log.debug("Download in progress--ignoring nav request.");
+            return;
+        }
+        var gridsB = gridAgentB.value();
+        if (gridsB && gridsB.primaryGrid) {
+            var next = gridsB.primaryGrid.navigate(step);
+            if (next) {
+                configuration.save({dateB: µ.dateToConfig(next).date, hourB: µ.dateToConfig(next).hour});
+            }
+        }
+    }
+
+    /**
+     * Interpolate field for Time B
+     */
+    function interpolateFieldB(globe, grids) {
+        return interpolateField.call({cancel: this.cancel}, globe, grids);
+    }
+
+    /**
+     * Animate for Time B
+     */
+    function animateB(globe, field, grids) {
+        return animate.call({cancel: this.cancel}, globe, field, grids);
+    }
+
+    /**
+     * Draw overlay for Time B
+     */
+    function drawOverlayB(field, overlayType) {
+        return drawOverlay.call({cancel: this.cancel}, field, overlayType);
+    }
+
+    /**
+     * Stop animation for Time B
+     */
+    function stopAnimationB(alsoClearCanvas) {
+        animatorAgentB.cancel();
+        if (alsoClearCanvas) {
+            // Clear secondary canvas will be handled in split mode
+        }
+    }
+
+    /**
+     * Update timeline slider positions and labels
+     */
+    function updateTimelineUI() {
+        var sliderA = d3.select("#timeline-slider-a");
+        var sliderB = d3.select("#timeline-slider-b");
+        var connect = d3.select("#timeline-connect");
+        var track = d3.select("#timeline-track");
+
+        if (!track.node()) return;
+
+        var valA = timelineState.sliderValues.a;
+        var valB = timelineState.sliderValues.b;
+
+        sliderA.classed("active", timelineState.activeSlider === "a");
+        sliderB.classed("active", timelineState.activeSlider === "b");
+
+        d3.select("#timeline-info-a").classed("active", timelineState.activeSlider === "a");
+        d3.select("#timeline-info-b").classed("active", timelineState.activeSlider === "b");
+
+        var gridsA = gridAgent.value();
+        var gridsB = gridAgentB.value();
+
+        if (gridsA && gridsA.primaryGrid) {
+            var dateA = gridsA.primaryGrid.date;
+            d3.select("#timeline-info-a .timeline-date").text(µ.toUTCISO(dateA));
+        }
+        if (gridsB && gridsB.primaryGrid) {
+            var dateB = gridsB.primaryGrid.date;
+            d3.select("#timeline-info-b .timeline-date").text(µ.toUTCISO(dateB));
+        }
+    }
+
+    /**
+     * Calculate difference between two fields and render as overlay
+     */
+    function renderDifferenceOverlay() {
+        var fieldA = fieldAgent.value();
+        var fieldB = fieldAgentB.value();
+
+        if (!fieldA || !fieldB) return;
+
+        var ctx = d3.select("#overlay").node().getContext("2d");
+        var imageDataA = fieldA.overlay;
+        var imageDataB = fieldB.overlay;
+
+        if (!imageDataA || !imageDataB) return;
+
+        var width = imageDataA.width;
+        var height = imageDataA.height;
+        var dataA = imageDataA.data;
+        var dataB = imageDataB.data;
+
+        var diffData = ctx.createImageData(width, height);
+        var diffPixels = diffData.data;
+
+        for (var i = 0; i < dataA.length; i += 4) {
+            var rA = dataA[i], gA = dataA[i+1], bA = dataA[i+2], aA = dataA[i+3];
+            var rB = dataB[i], gB = dataB[i+1], bB = dataB[i+2], aB = dataB[i+3];
+
+            if (aA > 0 && aB > 0) {
+                var diffR = rB - rA;
+                var diffG = gB - gA;
+                var diffB = bB - bA;
+                var avgDiff = (diffR + diffG + diffB) / 3;
+
+                if (avgDiff > 10) {
+                    diffPixels[i] = 255;
+                    diffPixels[i+1] = 100;
+                    diffPixels[i+2] = 100;
+                    diffPixels[i+3] = 200;
+                } else if (avgDiff < -10) {
+                    diffPixels[i] = 100;
+                    diffPixels[i+1] = 100;
+                    diffPixels[i+2] = 255;
+                    diffPixels[i+3] = 200;
+                } else {
+                    diffPixels[i] = 200;
+                    diffPixels[i+1] = 200;
+                    diffPixels[i+2] = 200;
+                    diffPixels[i+3] = 100;
+                }
+            } else {
+                diffPixels[i+3] = 0;
+            }
+        }
+
+        µ.clearCanvas(d3.select("#overlay").node());
+        ctx.putImageData(diffData, 0, 0);
+    }
+
+    /**
+     * Toggle comparison mode
+     */
+    function setCompareMode(mode) {
+        timelineState.compareMode = mode;
+        configuration.save({compareMode: mode});
+
+        var timeline = d3.select("#timeline");
+        var body = d3.select("body");
+
+        if (mode === "off") {
+            timeline.classed("invisible", true);
+            body.classed("compare-active", false);
+            body.classed("compare-diff", false);
+
+            animatorAgentB.cancel();
+            fieldAgentB.cancel();
+            gridAgentB.cancel();
+        } else {
+            timeline.classed("invisible", false);
+            body.classed("compare-active", true);
+
+            if (mode === "diff") {
+                body.classed("compare-diff", true);
+            } else {
+                body.classed("compare-diff", false);
+            }
+
+            var attr = configuration.attributes;
+            if (!attr.dateB || !attr.hourB) {
+                var gridsA = gridAgent.value();
+                if (gridsA && gridsA.primaryGrid) {
+                    var threeHoursAgo = gridsA.primaryGrid.navigate(-1);
+                    if (threeHoursAgo) {
+                        configuration.save({
+                            dateB: µ.dateToConfig(threeHoursAgo).date,
+                            hourB: µ.dateToConfig(threeHoursAgo).hour
+                        });
+                    }
+                }
+            } else {
+                gridAgentB.submit(buildGridsB);
+            }
+        }
+
+        d3.select("#compare-off").classed("highlighted", mode === "off");
+        d3.select("#compare-split").classed("highlighted", mode === "split");
+        d3.select("#compare-diff").classed("highlighted", mode === "diff");
+    }
+
+    /**
+     * Switch active time point for comparison
+     */
+    function switchActiveTimePoint(timePoint) {
+        if (timelineState.compareMode === "off") return;
+
+        timelineState.activeSlider = timePoint;
+
+        d3.select("#timeline-slider-a").classed("active", timePoint === "a");
+        d3.select("#timeline-slider-b").classed("active", timePoint === "b");
+        d3.select("#timeline-info-a").classed("active", timePoint === "a");
+        d3.select("#timeline-info-b").classed("active", timePoint === "b");
+
+        if (timelineState.compareMode === "split") {
+            if (timePoint === "a") {
+                animatorAgentB.cancel();
+                var gridsA = gridAgent.value();
+                if (gridsA) {
+                    fieldAgent.submit(interpolateField, globeAgent.value(), gridsA);
+                }
+            } else {
+                animatorAgent.cancel();
+                var gridsB = gridAgentB.value();
+                if (gridsB) {
+                    fieldAgent.submit(interpolateField, globeAgent.value(), gridsB);
+                }
+            }
+        }
+    }
+
+    /**
+     * Navigate the active time point
+     */
+    function navigateActiveTimePoint(step) {
+        if (timelineState.compareMode === "off") {
+            navigate(step);
+            return;
+        }
+
+        if (timelineState.activeSlider === "a") {
+            navigate(step);
+        } else {
+            navigateB(step);
         }
     }
 
@@ -1072,11 +1347,26 @@
         });
 
         // Add event handlers for the time navigation buttons.
-        d3.select("#nav-backward-more").on("click", navigate.bind(null, -10));
-        d3.select("#nav-forward-more" ).on("click", navigate.bind(null, +10));
-        d3.select("#nav-backward"     ).on("click", navigate.bind(null, -1));
-        d3.select("#nav-forward"      ).on("click", navigate.bind(null, +1));
-        d3.select("#nav-now").on("click", function() { configuration.save({date: "current", hour: ""}); });
+        d3.select("#nav-backward-more").on("click", navigateActiveTimePoint.bind(null, -10));
+        d3.select("#nav-forward-more" ).on("click", navigateActiveTimePoint.bind(null, +10));
+        d3.select("#nav-backward"     ).on("click", navigateActiveTimePoint.bind(null, -1));
+        d3.select("#nav-forward"      ).on("click", navigateActiveTimePoint.bind(null, +1));
+        d3.select("#nav-now").on("click", function() {
+            if (timelineState.compareMode === "off" || timelineState.activeSlider === "a") {
+                configuration.save({date: "current", hour: ""});
+            } else {
+                var gridsB = gridAgentB.value();
+                if (gridsB && gridsB.primaryGrid) {
+                    var now = gridsB.primaryGrid.navigate(100);
+                    if (now) {
+                        configuration.save({
+                            dateB: µ.dateToConfig(now).date,
+                            hourB: µ.dateToConfig(now).hour
+                        });
+                    }
+                }
+            }
+        });
 
         d3.select("#option-show-grid").on("click", function() {
             configuration.save({showGridPoints: !configuration.get("showGridPoints")});
@@ -1111,6 +1401,117 @@
         d3.select(window).on("orientationchange", function() {
             view = µ.view();
             globeAgent.submit(buildGlobe, configuration.get("projection"));
+        });
+
+        // Setup comparison mode event handlers
+        d3.select("#compare-off").on("click", function() { setCompareMode("off"); });
+        d3.select("#compare-split").on("click", function() { setCompareMode("split"); });
+        d3.select("#compare-diff").on("click", function() { setCompareMode("diff"); });
+
+        // Setup timeline close button
+        d3.select("#timeline-close").on("click", function() {
+            setCompareMode("off");
+        });
+
+        // Setup timeline slider click behavior
+        function setupTimelineSliders() {
+            var sliderA = d3.select("#timeline-slider-a");
+            var sliderB = d3.select("#timeline-slider-b");
+            var infoA = d3.select("#timeline-info-a");
+            var infoB = d3.select("#timeline-info-b");
+
+            function activateSlider(timePoint) {
+                switchActiveTimePoint(timePoint);
+            }
+
+            sliderA.on("click", function() {
+                d3.event.stopPropagation();
+                activateSlider("a");
+            });
+
+            sliderB.on("click", function() {
+                d3.event.stopPropagation();
+                activateSlider("b");
+            });
+
+            infoA.on("click", function() {
+                d3.event.stopPropagation();
+                activateSlider("a");
+            });
+
+            infoB.on("click", function() {
+                d3.event.stopPropagation();
+                activateSlider("b");
+            });
+
+            updateTimelineUI();
+        }
+
+        setupTimelineSliders();
+
+        // Setup Time B grid agent listeners
+        gridAgentB.on("submit", function() {
+            report.status("Loading Time B...");
+        });
+        gridAgentB.on("update", function(grids) {
+            report.status("");
+            updateTimelineUI();
+        });
+
+        // Start interpolation for Time B when grid updates
+        function startInterpolationB() {
+            fieldAgentB.submit(interpolateFieldB, globeAgent.value(), gridAgentB.value());
+        }
+        fieldAgentB.listenTo(gridAgentB, "update", startInterpolationB);
+        fieldAgentB.listenTo(rendererAgent, "render", startInterpolationB);
+        fieldAgentB.listenTo(rendererAgent, "start", function() { fieldAgentB.cancel(); });
+        fieldAgentB.listenTo(rendererAgent, "redraw", function() { fieldAgentB.cancel(); });
+
+        // Start animation for Time B when field updates
+        animatorAgentB.listenTo(fieldAgentB, "update", function(field) {
+            animatorAgentB.submit(animateB, globeAgent.value(), field, gridAgentB.value());
+        });
+        animatorAgentB.listenTo(rendererAgent, "start", stopAnimationB.bind(null, true));
+        animatorAgentB.listenTo(gridAgentB, "submit", stopAnimationB.bind(null, false));
+        animatorAgentB.listenTo(fieldAgentB, "submit", stopAnimationB.bind(null, false));
+
+        // Listen for Time B configuration changes
+        configuration.on("change", function() {
+            var changed = _.keys(configuration.changedAttributes());
+
+            if (_.intersection(changed, ["dateB", "hourB", "param", "surface", "level"]).length > 0) {
+                if (timelineState.compareMode !== "off") {
+                    gridAgentB.submit(buildGridsB);
+                }
+            }
+
+            if (_.indexOf(changed, "compareMode") >= 0) {
+                var mode = configuration.get("compareMode");
+                if (mode) {
+                    timelineState.compareMode = mode;
+                    if (mode !== "off") {
+                        d3.select("#timeline").classed("invisible", false);
+                        d3.select("body").classed("compare-split", mode === "split");
+                        d3.select("body").classed("compare-diff", mode === "diff");
+                    }
+                }
+            }
+        });
+
+        // Update timeline UI when either grid updates
+        gridAgent.on("update", updateTimelineUI);
+        gridAgentB.on("update", updateTimelineUI);
+
+        // For diff mode, render difference overlay when both fields are ready
+        fieldAgent.on("update", function() {
+            if (timelineState.compareMode === "diff") {
+                renderDifferenceOverlay();
+            }
+        });
+        fieldAgentB.on("update", function() {
+            if (timelineState.compareMode === "diff") {
+                renderDifferenceOverlay();
+            }
         });
     }
 
