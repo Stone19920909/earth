@@ -1,0 +1,115 @@
+{
+  "alerts": [
+    {
+      "id": "typhoon-2024-001",
+      "type": "typhoon",
+      "name": "台风杜苏芮",
+      "level": "red",
+      "coordinates": {
+        "longitude": 121.5,
+        "latitude": 25.0
+      },
+      "radius": 500,
+      "details": {
+        "title": "台风红色预警",
+        "description": "预计台风杜苏芮将于未来24小时内登陆，中心附近最大风力可达17级以上。",
+        "windspeed": "60 m/s",
+        "pressure": "920 hPa",
+        "movement": "向西北方向移动",
+        "affectedAreas": ["台湾", "福建", "浙江", "广东"],
+        "precautions": [
+          "请密切关注台风动向，做好防风准备",
+          "停止露天活动和高空等户外危险作业",
+          "相关水域水上作业和过往船舶采取积极的应对措施",
+          "加固或者拆除易被风吹动的搭建物",
+          "人员切勿随意外出，确保老人小孩留在家中最安全的地方"
+        ],
+        "validFrom": "2024-07-28T00:00:00Z",
+        "validUntil": "2024-07-30T00:00:00Z"
+      }
+    },
+    {
+      "id": "rainstorm-2024-001",
+      "type": "rainstorm",
+      "name": "暴雨橙色预警",
+      "level": "orange",
+      "coordinates": {
+        "longitude": 114.0,
+        "latitude": 30.5
+      },
+      "radius": 300,
+      "details": {
+        "title": "暴雨橙色预警",
+        "description": "预计未来12小时内，部分地区降雨量将达到100毫米以上。",
+        "rainfall": "100-200 mm",
+        "duration": "12小时",
+        "affectedAreas": ["湖北", "湖南", "江西", "安徽"],
+        "precautions": [
+          "政府及相关部门按照职责做好防暴雨应急工作",
+          "切断有危险的室外电源，暂停户外作业",
+          "处于危险地带的单位应当停课、停业，采取专门措施保护已到校学生、幼儿和其他上班人员的安全",
+          "做好城市、农田的排涝，注意防范可能引发的山洪、滑坡、泥石流等灾害"
+        ],
+        "validFrom": "2024-07-28T06:00:00Z",
+        "validUntil": "2024-07-29T06:00:00Z"
+      }
+    },
+    {
+      "id": "typhoon-2024-002",
+      "type": "typhoon",
+      "name": "台风卡努",
+      "level": "orange",
+      "coordinates": {
+        "longitude": 135.0,
+        "latitude": 20.0
+      },
+      "radius": 400,
+      "details": {
+        "title": "台风橙色预警",
+        "description": "台风卡努正在向西北方向移动，预计将影响东海海域。",
+        "windspeed": "45 m/s",
+        "pressure": "955 hPa",
+        "movement": "向西北方向移动",
+        "affectedAreas": ["东海", "台湾以东洋面"],
+        "precautions": [
+          "密切关注台风动向",
+          "海上作业船舶及时回港避风",
+          "沿海地区注意防风准备"
+        ],
+        "validFrom": "2024-07-28T00:00:00Z",
+        "validUntil": "2024-08-01T00:00:00Z"
+      }
+    },
+    {
+      "id": "heatwave-2024-001",
+      "type": "heatwave",
+      "name": "高温红色预警",
+      "level": "red",
+      "coordinates": {
+        "longitude": 116.5,
+        "latitude": 39.9
+      },
+      "radius": 250,
+      "details": {
+        "title": "高温红色预警",
+        "description": "预计未来24小时内，部分地区最高气温将升至40℃以上。",
+        "temperature": "40-42℃",
+        "duration": "24小时",
+        "affectedAreas": ["北京", "天津", "河北"],
+        "precautions": [
+          "有关部门和单位按照职责采取防暑降温应急措施",
+          "停止户外露天作业（除特殊行业外）",
+          "对老、弱、病、幼人群采取保护措施",
+          "注意防范因用电量过高，以及电线、变压器等电力负载过大而引发的火灾"
+        ],
+        "validFrom": "2024-07-28T00:00:00Z",
+        "validUntil": "2024-07-29T00:00:00Z"
+      }
+    }
+  ],
+  "metadata": {
+    "generatedAt": "2024-07-28T00:00:00Z",
+    "source": "模拟气象预警数据",
+    "version": "1.0"
+  }
+}

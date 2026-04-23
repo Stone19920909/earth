@@ -245,6 +245,122 @@ body {
 }
 
 /**************************************************************************************************
+ * Weather Alerts Styling
+ **************************************************************************************************/
+
+.alert-marker {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.alert-marker:hover {
+    transform: scale(1.1);
+}
+
+.alert-marker circle {
+    transition: opacity 0.2s ease;
+}
+
+.alert-marker:hover circle {
+    opacity: 0.9 !important;
+}
+
+.pulse-circle {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.1;
+        transform: scale(1.3);
+    }
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+}
+
+#alert-panel {
+    background-color: rgba(5, 10, 30, 0.9);
+    border-radius: 0.5rem/0.5rem;
+    pointer-events: all;
+    margin-top: 1rem;
+    padding: 1rem 1.5rem 1rem 1.5rem;
+    max-width: 400px;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+#alert-panel.invisible {
+    display: none;
+}
+
+#alert-panel p {
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+}
+
+#alert-panel p:first-child {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+#alert-title {
+    color: #ff4444;
+}
+
+#alert-close {
+    float: right;
+    padding-left: 1rem;
+}
+
+#alert-description {
+    color: #cccccc;
+    font-style: italic;
+}
+
+#alert-info p {
+    font-size: 1rem;
+    color: #eeeeee;
+}
+
+#alert-affected {
+    color: #88ccff;
+    font-size: 0.95rem;
+}
+
+#alert-precautions {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #333333;
+}
+
+#alert-precautions ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+#alert-precautions li {
+    margin-bottom: 0.5rem;
+    color: #ffcc00;
+    line-height: 1.4;
+    font-size: 0.95rem;
+}
+
+#alert-validity {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #333333;
+    color: #888888;
+    font-size: 0.85rem;
+}
+
+/**************************************************************************************************
  * About Page
  **************************************************************************************************/
 
