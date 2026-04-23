@@ -25,6 +25,20 @@
     var PARTICLE_REDUCTION = 0.75;            // reduce particle count to this much of normal for mobile devices
     var FRAME_RATE = 40;                      // desired milliseconds per frame
 
+    var performanceMonitor = {
+        fpsHistory: [],
+        frameCount: 0,
+        lastTime: Date.now(),
+        currentParticleCount: 0,
+        isEnabled: false
+    };
+
+    var trendData = {
+        years: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+        baseTemp: 15,
+        currentCoord: null
+    };
+
     var NULL_WIND_VECTOR = [NaN, NaN, null];  // singleton for undefined location outside the vector field [u, v, mag]
     var HOLE_VECTOR = [NaN, NaN, null];       // singleton that signifies a hole in the vector field
     var TRANSPARENT_BLACK = [0, 0, 0, 0];     // singleton 0 rgba
@@ -559,6 +573,7 @@
         var fadeFillStyle = µ.isFF() ? "rgba(0, 0, 0, 0.95)" : "rgba(0, 0, 0, 0.97)";  // FF Mac alpha behaves oddly
 
         log.debug("particle count: " + particleCount);
+        performanceMonitor.currentParticleCount = particleCount;
         var particles = [];
         for (var i = 0; i < particleCount; i++) {
             particles.push(field.randomize({age: _.random(0, MAX_PARTICLE_AGE)}));
@@ -631,6 +646,7 @@
                 }
                 evolve();
                 draw();
+                updatePerformanceMonitor();
                 setTimeout(frame, FRAME_RATE);
             }
             catch (e) {
@@ -842,6 +858,228 @@
         animatorAgent.cancel();
         if (alsoClearCanvas) {
             µ.clearCanvas(d3.select("#animation").node());
+        }
+    }
+
+    function updatePerformanceMonitor() {
+        if (!performanceMonitor.isEnabled) return;
+
+        performanceMonitor.frameCount++;
+        var now = Date.now();
+        var elapsed = now - performanceMonitor.lastTime;
+
+        if (elapsed >= 1000) {
+            var fps = Math.round((performanceMonitor.frameCount * 1000) / elapsed);
+            performanceMonitor.fpsHistory.push(fps);
+            if (performanceMonitor.fpsHistory.length > 50) {
+                performanceMonitor.fpsHistory.shift();
+            }
+
+            d3.select("#perf-fps-value").text(fps);
+
+            var memory = "N/A";
+            if (performance.memory) {
+                memory = Math.round(performance.memory.usedJSHeapSize / 1048576) + " MB";
+            }
+            d3.select("#perf-memory-value").text(memory);
+            d3.select("#perf-particles-value").text(performanceMonitor.currentParticleCount);
+
+            drawPerformanceChart();
+
+            performanceMonitor.frameCount = 0;
+            performanceMonitor.lastTime = now;
+        }
+    }
+
+    function drawPerformanceChart() {
+        var canvas = d3.select("#perf-chart").node();
+        if (!canvas) return;
+
+        var ctx = canvas.getContext("2d");
+        var width = canvas.width;
+        var height = canvas.height;
+
+        ctx.clearRect(0, 0, width, height);
+
+        if (performanceMonitor.fpsHistory.length < 2) return;
+
+        ctx.strokeStyle = "#505050";
+        ctx.lineWidth = 1;
+        for (var i = 0; i <= 4; i++) {
+            var y = height - (i * height / 4);
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(width, y);
+            ctx.stroke();
+        }
+
+        var maxFps = Math.max.apply(null, performanceMonitor.fpsHistory.concat([30]));
+        var data = performanceMonitor.fpsHistory;
+        var step = width / (data.length - 1);
+
+        ctx.beginPath();
+        ctx.strokeStyle = "#e2b42e";
+        ctx.lineWidth = 2;
+
+        for (var i = 0; i < data.length; i++) {
+            var x = i * step;
+            var y = height - (data[i] / maxFps) * height;
+            if (i === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        }
+        ctx.stroke();
+    }
+
+    function generateTrendData(coord) {
+        var temperatures = [];
+        var lat = coord ? coord[1] : 0;
+        var lon = coord ? coord[0] : 0;
+
+        var latFactor = 1 - Math.abs(lat) / 90;
+        var baseTemp = 10 + 20 * latFactor;
+
+        for (var i = 0; i < trendData.years.length; i++) {
+            var year = trendData.years[i];
+            var warming = (year - 2015) * 0.08;
+            var seasonal = Math.sin((lon / 180 + year % 4) * Math.PI) * 1.5;
+            var noise = (Math.random() - 0.5) * 0.5;
+            temperatures.push(baseTemp + warming + seasonal + noise);
+        }
+
+        return temperatures;
+    }
+
+    function drawTrendChart(coord) {
+        var canvas = d3.select("#trend-chart").node();
+        if (!canvas) return;
+
+        var ctx = canvas.getContext("2d");
+        var width = canvas.width;
+        var height = canvas.height;
+        var padding = { top: 15, right: 15, bottom: 25, left: 40 };
+
+        ctx.clearRect(0, 0, width, height);
+
+        var temperatures = generateTrendData(coord);
+        var minTemp = Math.min.apply(null, temperatures) - 1;
+        var maxTemp = Math.max.apply(null, temperatures) + 1;
+
+        var chartWidth = width - padding.left - padding.right;
+        var chartHeight = height - padding.top - padding.bottom;
+
+        ctx.strokeStyle = "#404040";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, padding.top);
+        ctx.lineTo(padding.left, height - padding.bottom);
+        ctx.lineTo(width - padding.right, height - padding.bottom);
+        ctx.stroke();
+
+        ctx.fillStyle = "#888888";
+        ctx.font = "10px mplus-2p-light-sub";
+        ctx.textAlign = "right";
+        for (var i = 0; i <= 4; i++) {
+            var temp = minTemp + (maxTemp - minTemp) * i / 4;
+            var y = height - padding.bottom - (i * chartHeight / 4);
+            ctx.fillText(temp.toFixed(1) + "°", padding.left - 5, y + 3);
+        }
+
+        ctx.textAlign = "center";
+        for (var i = 0; i < trendData.years.length; i += 2) {
+            var x = padding.left + (i * chartWidth / (trendData.years.length - 1));
+            ctx.fillText(trendData.years[i].toString().substr(2), x, height - 5);
+        }
+
+        ctx.strokeStyle = "#505050";
+        ctx.setLineDash([3, 3]);
+        for (var i = 1; i < 4; i++) {
+            var y = height - padding.bottom - (i * chartHeight / 4);
+            ctx.beginPath();
+            ctx.moveTo(padding.left, y);
+            ctx.lineTo(width - padding.right, y);
+            ctx.stroke();
+        }
+        ctx.setLineDash([]);
+
+        ctx.beginPath();
+        ctx.strokeStyle = "#e2b42e";
+        ctx.lineWidth = 2;
+
+        for (var i = 0; i < temperatures.length; i++) {
+            var x = padding.left + (i * chartWidth / (temperatures.length - 1));
+            var y = height - padding.bottom - ((temperatures[i] - minTemp) / (maxTemp - minTemp)) * chartHeight;
+            if (i === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        }
+        ctx.stroke();
+
+        ctx.fillStyle = "#e2b42e";
+        for (var i = 0; i < temperatures.length; i++) {
+            var x = padding.left + (i * chartWidth / (temperatures.length - 1));
+            var y = height - padding.bottom - ((temperatures[i] - minTemp) / (maxTemp - minTemp)) * chartHeight;
+            ctx.beginPath();
+            ctx.arc(x, y, 3, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+        if (coord) {
+            trendData.currentCoord = coord;
+            d3.select("#trend-coord").text(µ.formatCoordinates(coord[0], coord[1]));
+        }
+    }
+
+    function togglePerformancePanel() {
+        var panel = d3.select("#performance-panel");
+        var isVisible = !panel.classed("invisible");
+        panel.classed("invisible", isVisible);
+        performanceMonitor.isEnabled = !isVisible;
+
+        if (!isVisible) {
+            performanceMonitor.frameCount = 0;
+            performanceMonitor.lastTime = Date.now();
+            performanceMonitor.fpsHistory = [];
+        }
+    }
+
+    function toggleTrendPanel() {
+        var panel = d3.select("#trend-panel");
+        var isVisible = !panel.classed("invisible");
+        panel.classed("invisible", isVisible);
+
+        if (!isVisible && activeLocation.coord) {
+            drawTrendChart(activeLocation.coord);
+        }
+    }
+
+    function autoLocateUser() {
+        if (navigator.geolocation) {
+            report.status("Finding your location...");
+            navigator.geolocation.getCurrentPosition(
+                function(pos) {
+                    report.status("");
+                    var coord = [pos.coords.longitude, pos.coords.latitude];
+                    var rotate = globeAgent.value() ? globeAgent.value().locate(coord) : null;
+                    if (rotate && globeAgent.value()) {
+                        globeAgent.value().projection.rotate(rotate);
+                        configuration.save({orientation: globeAgent.value().orientation()});
+                    }
+                    var point = globeAgent.value() ? globeAgent.value().projection(coord) : null;
+                    if (point) {
+                        dispatch.trigger("click", point, coord);
+                    }
+                },
+                function(err) {
+                    log.error("Geolocation error: " + err.message);
+                    report.status("");
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
+            );
         }
     }
 
@@ -1107,6 +1345,26 @@
             bindButtonToConfiguration("#" + p, {projection: p, orientation: ""}, ["projection"]);
         });
 
+        // Add handlers for performance monitor and trend panel buttons.
+        d3.select("#show-performance").on("click", togglePerformancePanel);
+        d3.select("#show-trend").on("click", toggleTrendPanel);
+
+        // Add handlers for closing the panels.
+        d3.select("#perf-close").on("click", function() {
+            d3.select("#performance-panel").classed("invisible", true);
+            performanceMonitor.isEnabled = false;
+        });
+        d3.select("#trend-close").on("click", function() {
+            d3.select("#trend-panel").classed("invisible", true);
+        });
+
+        // Update trend chart when location is selected.
+        inputController.on("click", function(point, coord) {
+            if (!d3.select("#trend-panel").classed("invisible") && coord && _.isFinite(coord[0]) && _.isFinite(coord[1])) {
+                drawTrendChart(coord);
+            }
+        });
+
         // When touch device changes between portrait and landscape, rebuild globe using the new view size.
         d3.select(window).on("orientationchange", function() {
             view = µ.view();
@@ -1117,6 +1375,11 @@
     function start() {
         // Everything is now set up, so load configuration from the hash fragment and kick off change events.
         configuration.fetch();
+
+        // Auto-locate user when the page loads (after a short delay to allow globe to initialize).
+        setTimeout(function() {
+            autoLocateUser();
+        }, 2000);
     }
 
     when(true).then(init).then(start).otherwise(report.error);
