@@ -1070,8 +1070,8 @@
                         configuration.save({orientation: globeAgent.value().orientation()});
                     }
                     var point = globeAgent.value() ? globeAgent.value().projection(coord) : null;
-                    if (point) {
-                        dispatch.trigger("click", point, coord);
+                    if (point && inputController) {
+                        inputController.trigger("click", point, coord);
                     }
                 },
                 function(err) {
