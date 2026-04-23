@@ -37,6 +37,28 @@
         <a id="sponsor-link" href="https://www.facebook.com/EarthWindMap">EarthWindMap</a>
     </div>
 
+    <div id="timeline" class="invisible">
+        <div id="timeline-header">
+            <span id="timeline-title">Time Comparison</span>
+            <span id="timeline-close" class="text-button"> ✕ </span>
+        </div>
+        <div id="timeline-slider-container">
+            <div id="timeline-track">
+                <div id="timeline-slider-a" class="timeline-slider" data-slider="a" title="Time A"></div>
+                <div id="timeline-slider-b" class="timeline-slider" data-slider="b" title="Time B"></div>
+                <div id="timeline-connect" class="timeline-connect"></div>
+            </div>
+            <div id="timeline-labels">
+                <span id="timeline-label-a" class="timeline-label">Time A</span>
+                <span id="timeline-label-b" class="timeline-label">Time B</span>
+            </div>
+        </div>
+        <div id="timeline-info">
+            <span id="timeline-info-a"><strong>A:</strong> <span class="timeline-date">-</span></span>
+            <span id="timeline-info-b"><strong>B:</strong> <span class="timeline-date">-</span></span>
+        </div>
+    </div>
+
     <div id="details">
         <p id="status"></p>
         <div id="location">
@@ -79,6 +101,11 @@
             <p>Mode | <span
                 class="text-button" id="wind-mode-enable">Air</span> – <span
                 class="text-button" id="ocean-mode-enable">Ocean</span>
+            </p>
+            <p>Compare | <span
+                class="text-button" id="compare-off">Off</span> – <span
+                class="text-button" id="compare-split">Split</span> – <span
+                class="text-button" id="compare-diff">Diff</span>
             </p>
             <p class="wind-mode">Height | <span
                 class="surface text-button" id="surface-level" title="Surface">Sfc</span> – <span
