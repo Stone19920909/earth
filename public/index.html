@@ -37,6 +37,23 @@
         <a id="sponsor-link" href="https://www.facebook.com/EarthWindMap">EarthWindMap</a>
     </div>
 
+    <div id="performance-panel" class="invisible">
+        <p id="perf-title">Performance Monitor<span id="perf-close" class="text-button"> ✕ </span></p>
+        <p id="perf-fps">FPS: <span id="perf-fps-value">0</span></p>
+        <p id="perf-memory">Memory: <span id="perf-memory-value">0 MB</span></p>
+        <p id="perf-particles">Particles: <span id="perf-particles-value">0</span></p>
+        <canvas id="perf-chart" width="150" height="60"></canvas>
+    </div>
+
+    <div id="trend-panel" class="invisible">
+        <p id="trend-title">Temperature Trend<span id="trend-close" class="text-button"> ✕ </span></p>
+        <div id="trend-location">
+            <span id="trend-coord"></span>
+        </div>
+        <canvas id="trend-chart" width="280" height="120"></canvas>
+        <p id="trend-legend">Yearly Average Temperature (°C)</p>
+    </div>
+
     <div id="details">
         <p id="status"></p>
         <div id="location">
@@ -75,6 +92,10 @@
                 class="text-button" id="nav-forward-more"> » </span><span
                 class="text-button" id="show-location" title="Current Position">〖◯〗</span><span
                 class="text-button" id="option-show-grid" title="Toggle Grid">Grid</span>
+            </p>
+            <p>Tools | <span
+                class="text-button" id="show-performance" title="Performance Monitor">Perf</span> – <span
+                class="text-button" id="show-trend" title="Temperature Trend">Trend</span>
             </p>
             <p>Mode | <span
                 class="text-button" id="wind-mode-enable">Air</span> – <span
